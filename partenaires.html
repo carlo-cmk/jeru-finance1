@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partenaires & Direction - JERU Finance</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles spécifiques pour cette page */
+        .partenaires-section {
+            padding: 100px 0 60px;
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f5e9 100%);
+            min-height: 100vh;
+        }
+
+        .partenaires-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .partenaires-header h1 {
+            font-size: 36px;
+            color: #16633f;
+            margin-bottom: 15px;
+        }
+
+        .partenaires-header p {
+            font-size: 18px;
+            color: #6b7b7f;
+        }
+
+        /* Section DG */
+        .dg-section {
+            margin-bottom: 80px;
+        }
+
+        .dg-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .dg-photo {
+            width: 250px;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .dg-info h2 {
+            font-size: 28px;
+            color: #16633f;
+            margin-bottom: 10px;
+        }
+
+        .dg-info .titre {
+            font-size: 18px;
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .dg-info p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* Section Partenaires */
+        .partenaires-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .partenaire-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .partenaire-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .partenaire-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .partenaire-card h3 {
+            font-size: 20px;
+            color: #16633f;
+            margin-bottom: 10px;
+        }
+
+        .partenaire-card p {
+            font-size: 14px;
+            color: #6b7b7f;
+            line-height: 1.6;
+        }
+
+        .partenaire-type {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .partenaires-section {
+                padding: 80px 20px 40px;
+            }
+
+            .partenaires-header h1 {
+                font-size: 28px;
+            }
+
+            .dg-card {
+                flex-direction: column;
+                padding: 25px;
+                gap: 25px;
+            }
+
+            .dg-photo {
+                width: 200px;
+                height: 250px;
+            }
+
+            .dg-info h2 {
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .dg-info .titre {
+                text-align: center;
+            }
+
+            .partenaires-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header/Navbar identique à l'index -->
+    <header class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <img src="Image/WhatsApp Image 2026-02-09 at 12.05.27.jpeg" alt="JERU Logo" width="70" height="70">
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="Index.html#inicio">ACCUEIL</a>
+                    <a href="Index.html#sobre">À PROPOS</a>
+                    <a href="Index.html#servicos">SERVICES</a>
+                    <a href="partenaires.html">PARTENAIRES</a>
+                    <a href="Index.html#trabalhe">REJOIGNEZ-NOUS</a>
+                    <a href="Index.html#contato">CONTACT</a>
+                </nav>
+                <button class="btn-empresa" onclick="window.location.href='demande-credit.html'">DEMANDER UN CRÉDIT</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section Partenaires & DG -->
+    <section class="partenaires-section">
+        <div class="container">
+            <!-- Header -->
+            <div class="partenaires-header">
+                <h1>Nos Partenaires & Direction</h1>
+                <p>Les acteurs qui font la force de JERU Finance</p>
+            </div>
+
+            <!-- Section DG -->
+            <div class="dg-section">
+                <div class="dg-card">
+                    <img src="Image/jp.jpeg" alt="Directeur Général JERU Finance" class="dg-photo">
+                    <div class="dg-info">
+                        <h2>Ir. JP Bolombo</h2>
+                        <div class="titre">Directeur Général & Fondateur</div>
+                        <p>Ingénieur en informatique et passionné par l'inclusion financière, Ir. JP Bolombo a fondé JERU Finance avec la vision de transformer l'accès aux services financiers en République Démocratique du Congo.</p>
+                        <p>Sous sa direction, JERU Finance est devenue une institution de microfinance innovante, mettant la technologie au service du développement économique des communautés locales.</p>
+                        <p><strong>Vision :</strong> "Créer un écosystème financier inclusif où chaque Congolais peut réaliser ses rêves entrepreneuriaux."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Partenaires -->
+            <h2 style="text-align: center; font-size: 28px; color: #16633f; margin-bottom: 40px;">Nos Partenaires Stratégiques</h2>
+            
+            <div class="partenaires-grid">
+                <!-- Partenaire 1 -->
+                <div class="partenaire-card">
+                    <img src="partenaire/WhatsApp Image 2026-02-18 at 10.35.23.jpeg" alt="Partenaire 1" class="partenaire-logo">
+                    <h3>Partenaire Institutionnel</h3>
+                    <p>Collaboration stratégique pour le développement des services financiers inclusifs en RDC.</p>
+                    <span class="partenaire-type">Institutionnel</span>
+                </div>
+
+                <!-- Partenaire 2 -->
+                <div class="partenaire-card">
+                    <img src="partenaire/WhatsApp Image 2026-02-18 at 10.35.23 (1).jpeg" alt="Partenaire 2" class="partenaire-logo">
+                    <h3>Partenaire Technique</h3>
+                    <p>Support technologique et innovation pour nos solutions de microfinance digitale.</p>
+                    <span class="partenaire-type">Technique</span>
+                </div>
+
+                <!-- Partenaire 3 -->
+                <div class="partenaire-card">
+                    <img src="logo/innovation.jpg" alt="Innovation" class="partenaire-logo">
+                    <h3>JERU Innovation</h3>
+                    <p>Branche innovation dédiée au développement de solutions technologiques adaptées.</p>
+                    <span class="partenaire-type">Innovation</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer identique à l'index -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section footer-about">
+                <div class="footer-logo">
+                    <img src="Image/WhatsApp Image 2026-02-09 at 12.05.27.jpeg" alt="JERU Logo">
+                </div>
+                <div>
+                    <p class="footer-text">
+                        <strong>JERU FINANCE SARL / HOLDING</strong>
+                        <strong style="font-size: 13px; color: #f39c12;">CRC: SC-006462/O-O</strong>
+                        Institution de Microfinance à Kinshasa engagée dans l'inclusion financière basée sur la confiance, la crédibilité, l'éthique et la qualité de service.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="footer-social">
+                    <a href="https://wa.me/243854573928" target="_blank" aria-label="WhatsApp" title="Contactez-nous sur WhatsApp">
+                        <img src="logo/icons8-whatsapp-logo-94.png" alt="WhatsApp">
+                    </a>
+                    <a href="#" target="_blank" aria-label="Facebook" title="Suivez-nous sur Facebook">
+                        <img src="logo/icons8-logo-facebook-1500.png" alt="Facebook">
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram" title="Suivez-nous sur Instagram">
+                        <img src="logo/icons8-instagram-94.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Rapide</h4>
+                <div class="footer-contact">
+                    <p>📞 <a href="tel:+243854573928">(+243) 854 573 928</a></p>
+                    <p>📧 <a href="mailto:contact@jerufinance.cd">contact@jerufinance.cd</a></p>
+                    <p>📍 Kinshasa, RDC</p>
+                    <p>🕒 Lun - Sam: 8h - 17h</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="footer-copyright">
+                <strong>Conçu par Ingénieur Jp Bolombo</strong> © 2026 - Tous droits réservés | JeRU Marketing & Inovalize
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu hamburger
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

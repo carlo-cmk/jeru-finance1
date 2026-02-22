@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="fr-FR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JERU Microfinance SARL - Accés au Crédit pour Tous</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animations au défilement */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #27ae60 0%, #f39c12 50%, #229954 100%);
+            transition: width 0.2s ease;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.7);
+        }
+
+        .back-to-top.show {
+            display: flex;
+            animation: slideInUp 0.4s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading animation */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <h3>JERU FINANCE</h3>
+            <p>Chargement...</p>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator"></div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Retour en haut">↑</button>
+    <!-- Header/Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <img src="Image/WhatsApp Image 2026-02-09 at 12.05.27.jpeg" alt="JERU Logo" width="70" height="70">
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="#inicio">ACCUEIL</a>
+                    <a href="#sobre">À PROPOS</a>
+                    <a href="#servicos">SERVICES</a>
+                    <a href="partenaires.html">PARTENAIRES</a>
+                    <a href="#trabalhe">REJOIGNEZ-NOUS</a>
+                    <a href="#contato">CONTACT</a>
+                </nav>
+                <button class="btn-empresa" onclick="window.location.href='demande-credit.html'">DEMANDER UN CRÉDIT</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Financer vos rêves,<br>créer votre avenir!</h1>
+            <p>JERU Microfinance SARL offre des solutions de crédit accessible et flexible pour les entrepreneurs et petites entreprises. Nous croyons que chacun mérite une chance de réaliser ses projets et de développer son activité de manière durable.</p>
+            <button class="btn-saiba-mais" onclick="window.location.href='demande-credit.html'">COMMENCER MAINTENANT</button>
+        </div>
+        <div class="hero-image">
+            <img src="Image/jp.jpeg" alt="Professional">
+        </div>
+    </section>
+
+    <!-- Service details database is now in script.js -->
+    <script>
+        // Mobile interactivity fix
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hamburger menu
+            const hamburger = document.getElementById('hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+            
+            // Modal for "en savoir plus" - positioned at click location
+            const modal = document.getElementById('serviceModal');
+            const closeBtn = document.querySelector('.modal-close');
+            const modalContent = modal ? modal.querySelector('.modal-content') : null;
+            
+            if (modal && modalContent) {
+                document.querySelectorAll('.saiba-mais').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        modal.classList.add('open');
+                    });
+                });
+                
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        modal.classList.remove('open');
+                        // Reset position
+                        modalContent.style.left = '';
+                        modalContent.style.top = '';
+                        modalContent.style.transform = '';
+                    });
+                }
+                
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('open');
+                        // Reset position
+                        modalContent.style.left = '';
+                        modalContent.style.top = '';
+                        modalContent.style.transform = '';
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Service details database (kept for compatibility)
+        const serviceDetails = {
+            // About section details
+            'qui-sommes-nous': {
+                icon: '🏢',
+                title: 'Qui sommes-nous ?',
+                content: `
+                    <p>L'entreprise <strong>JERU FINANCE</strong> est une institution financière, micro crédit et d'épargne en RDC.</p>
+                    <p>c'est une structure spécialisée dans la gestion et la fourniture du service financiers sécurisés, visant à accompagner :</p>
+                    <ul>
+                        <li>la communauté kimbanguiste</li>
+                        <li>les particuliers</li>
+                        <li>les entreprises et acteurs économiques dans la gestion et</li>
+                        <li>la protection et le développement de leurs ressources financières.</li>
+                        
+                    </ul>
+                `
+            },
+            'forme-juridique': {
+                icon: '🏛️',
+                title: 'Forme juridique',
+                content: `
+                    <p>SARL "Société à responsabilité limitée", c'est une forme juridique courante pour les petites et moyennes institutions financières, y compris certaines institutions micro finance. Elle offre une responsabilité limitée aux associés et flexibilité dans la gestion.</p>
+                `
+            },
+            'vision': {
+                icon: '🌟',
+                title: 'Vision',
+                content: `
+                    <p>Que l'entreprise JERU FINANCE soit un acteur financier de référence, reconnu pour la confiance, l'innovation, la fiabilité, l'inclusion et contribuer au développement économique durable de la "communauté kimbanguiste et autres" que nous servons.</p>
+                `
+            },
+            'mission': {
+                icon: '💼',
+                title: 'Mission',
+                content: `
+                    <p>L'entreprise JERU FINANCE a une mission de créer une relation de confiance et de transparence avec la communauté kimbanguiste et la population congolaise, de leurs convaincre avec notre message clé publicitaire mais simple.</p>
+                    <p>Exemple: chez "JERU FINANCE" nous croyons aux petits rêves. Que vous soyez vendeurs, agriculteurs, jeunes entrepreneurs... Nous vous accompagnons pas à pas, avec respect, simplicité et confiance.</p>
+                `
+            },
+            'valeurs': {
+                icon: '✨',
+                title: 'Nos Valeurs',
+                content: `
+                    <p><strong>JERU FINANCE</strong> est guidée par les valeurs d'intégrité, de transparence, de responsabilité, de professionnalisme, de confidentialité et d'inclusion financière afin de garantir un service fiable et durable à nos clients.</p>
+                    <p><strong>Exemples :</strong></p>
+                    <ul>
+                        <li>Protéger le dépôt des clients</li>
+                        <li>Accueillir les clients avec courtoisie</li>
+                        <li>Conserver les dossiers en sécurité</li>
+                    </ul>
+                `
+            },
+            'role': {
+                icon: '📌',
+                title: 'Rôle',
+                content: `
+                    <p>Le rôle de JERU FINANCE est essentiel dans l'économie, il consiste principalement à collecter, gérer et orienter les ressources financières afin de soutenir le développement économique et social.</p>
+                    <p><strong>Ces principaux rôles :</strong></p>
+                    <ul>
+                        <li><strong>Collecte et gestion de l'épargne</strong> — Permettre aux clients de déposer et sécuriser leur argent (comptes courants, comptes d'épargne et dépôt à terme). Offrir des produits d'épargne adaptés aux besoins de la communauté kimbanguiste, des particuliers et des entreprises.</li>
+                        <li><strong>Octroi de crédits</strong> — Fournir des prêts et micro crédit pour soutenir les entreprises, commerces, la communauté kimbanguiste, les projets individuels ou communautaires, l'achat de biens durables et les investissements.</li>
+                        <li><strong>Faciliter les paiements et transactions</strong> — Assurer le transfert d'argent, paiement et opérations financières de manière fiable et sécurisée.</li>
+                        <li><strong>Conseiller et accompagner les clients</strong> — Conseiller les clients sur la gestion de leurs ressources, la planification financière et l'investissement responsable.</li>
+                        <li><strong>Garantir la sécurité et la confiance</strong> — Protéger les fonds des clients grâce à des mécanismes de contrôle, de transparence et de conformité.</li>
+                        <li><strong>Contribution au développement économique et social</strong> — En finançant les activités génératrices de revenus, participer à la création d'emplois et à la réduction de la pauvreté.</li>
+                    </ul>
+                    <p><strong>Bref :</strong> JERU FINANCE est un acteur clé du développement, un intermédiaire de confiance entre l'épargne et l'investissement.</p>
+                `
+            },
+            'objectif': {
+                icon: '🎯',
+                title: 'Objectif',
+                content: `
+                    <p>L'objectif de l'entreprise JERU FINANCE est de faciliter l'accès au financement, promouvoir l'épargne, soutenir les entreprises, renforcer l'inclusion financière et améliorer durablement les conditions de vie du bénéficiaire.</p>
+                    <p><strong>Plus précisément, JERU FINANCE vise à :</strong></p>
+                    <ul>
+                        <li>Faciliter l'accès au financement pour les entrepreneurs et les ménages.</li>
+                        <li>Promouvoir l'épargne en proposant des produits adaptés aux besoins locaux.</li>
+                        <li>Soutenir les entreprises et commerces par des microcrédits et conseils.</li>
+                        <li>Renforcer l'inclusion financière en touchant les populations mal desservies.</li>
+                        <li>Améliorer durablement les conditions de vie des bénéficiaires via des financements responsables et de l'accompagnement.</li>
+                    </ul>
+                `
+            },
+            // Services section details
+            epargne: {
+                icon: '💰',
+                title: 'Collecter l\'Épargne',
+                content: `
+                    <h4>💰 1️⃣ Collecter l'épargne</h4>
+                    <p>Collecter l'épargne signifie permettre aux clients de <strong>déposer leur argent en sécurité</strong> auprès de JERU FINANCE pour le protéger et le faire fructifier.</p>
+                    
+                    <h5>Objectifs</h5>
+                    <ul>
+                        <li>Sécuriser l'argent des clients</li>
+                        <li>Encourager la culture d'épargne</li>
+                        <li>Aider les clients à préparer leurs projets futurs</li>
+                    </ul>
+
+                    <h5>Comment cela fonctionne</h5>
+                    <ul>
+                        <li>Le client ouvre un compte d'épargne</li>
+                        <li>Il effectue des dépôts réguliers (journalier, hebdomadaire ou mensuel)</li>
+                        <li>L'argent reste disponible selon les conditions du compte</li>
+                    </ul>
+
+                    <h5>Exemples</h5>
+                    <ul>
+                        <li>Épargne individuelle</li>
+                        <li>Épargne pour projet</li>
+                        <li>Épargne de groupe ou associations</li>
+                        <li>Épargne à terme</li>
+                    </ul>
+
+                    <p><strong>🎯 Impact :</strong> aide les clients à construire une stabilité financière.</p>
+
+                    <hr style="margin: 20px 0; border: none; border-top: 1px solid #e0e0e0;">
+
+                   `
+            },
+            agricole: {
+                icon: '<img src="Image/carte 1.png" alt="Carte de crédit" class="service-icon">',
+                title: 'Accorder des Crédits',
+                content: `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="Image/carte 1.png" alt="Carte de crédit" class="service-hero">
+                    </div>
+                    <h4>💳 Accorder des crédits</h4>
+                    <p>Accorder un crédit signifie <strong>prêter de l'argent aux clients</strong> pour financer leurs activités ou leurs besoins personnels.</p>
+                    
+                    <h5>Objectifs</h5>
+                    <ul>
+                        <li>Soutenir les petits commerçants et entrepreneurs</li>
+                        <li>Stimuler l'activité économique locale</li>
+                        <li>Permettre la croissance des entreprises</li>
+                    </ul>
+
+                    <h5>Fonctionnement</h5>
+                    <ul>
+                        <li>Analyse de la capacité de remboursement du client</li>
+                        <li>Décaissement du montant du crédit</li>
+                        <li>Remboursement selon un calendrier défini</li>
+                    </ul>
+
+                    <h5>Exemples</h5>
+                    <ul>
+                        <li>Microcrédit pour commerce</li>
+                        <li>Crédit PME</li>
+                        <li>Crédit agricole</li>
+                        <li>Crédit scolaire</li>
+                        <li>Crédit de consommation</li>
+                    </ul>
+<h5>Nos differentes cartes d'épargne et des crédits</h5>
+<ul>
+                        <li>Carte EKONZO et BOMENGO</li>
+                        <li>Carte MOPAYO</li>
+                        <li>Carte AVENIR VPI</li>
+                        
+                    </ul>
+                    <p><strong>🎯 Impact :</strong> permet aux clients de développer leurs revenus.</p>
+                `
+            },
+            investissement: {
+                icon: '<img src="Image/carte.png" alt="Carte de crédit" class="service-icon">',
+                title: 'Offrir des Services Financiers',
+                content: `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="Image/carte.png" alt="Carte de crédit" class="service-hero">
+                    </div>
+                    <h4>💳 Offrir des services financiers</h4>
+                    <p>Ce sont des services qui <strong>facilitent les opérations financières du quotidien</strong>.</p>
+                    
+                    <h5>Objectifs</h5>
+                    <ul>
+                        <li>Simplifier les transactions</li>
+                        <li>Gagner du temps et réduire les risques liés au transport d'argent liquide</li>
+                        <li>Moderniser les services financiers</li>
+                    </ul>
+
+                    <h5>Services possibles</h5>
+                    <ul>
+                        <li>Dépôt et retrait d'argent</li>
+                        <li>Transfert d'argent</li>
+                        <li>Paiement de factures</li>
+                        <li>Paiement mobile</li>
+                        <li>Cartes de paiement</li>
+                        <li>Services digitaux</li>
+                    </ul>
+
+                    <p><strong>🎯 Impact :</strong> rend les opérations financières rapides et accessibles.</p>
+                `
+            },
+            formation: {
+                icon: '<img src="Image/carte 2.png" alt="Formation" class="service-icon">',
+                title: 'Former et Accompagner les Clients',
+                content: `
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <img src="Image/carte 2.png" alt="Formation" class="service-hero">
+                    </div>
+                    <h4>📊 Former et accompagner les clients</h4>
+                    <p>Ce service consiste à <strong>aider les clients à mieux gérer leur argent</strong> et leurs activités.</p>
+                    
+                    <h5>Objectifs</h5>
+                    <ul>
+                        <li>Réduire les risques de mauvais usage du crédit</li>
+                        <li>Améliorer la réussite des entreprises financées</li>
+                        <li>Renforcer la relation de confiance avec les clients</li>
+                    </ul>
+
+                    <h5>Formes d'accompagnement</h5>
+                    <ul>
+                        <li>Éducation financière</li>
+                        <li>Formation en gestion de business</li>
+                        <li>Conseils en planification financière</li>
+                        <li>Coaching entrepreneurial</li>
+                    </ul>
+
+                    <p><strong>🎯 Impact :</strong> des clients plus solides, donc une institution plus forte.</p>
+                `
+            },
+            jeunes: {
+                icon: '🚀',
+                title: 'Crédit Jeunes Entrepreneurs',
+                content: `
+                    <p>Lancez votre projet entrepreneurial avec nos <strong>crédits spécialisés pour jeunes créateurs</strong> d'entreprise.</p>
+                    <p><strong>Caractéristiques du programme :</strong></p>
+                    <ul>
+                        <li>Taux préférentiels pour les jeunes entrepreneurs (18-40 ans)</li>
+                        <li>Montants adaptés aux petits projets (50 000 à 1 million FC)</li>
+                        <li>Mentorat et accompagnement personnalisé</li>
+                        <li>Procédure simplifiée et rapide</li>
+                        <li>Formation en gestion d'entreprise incluse</li>
+                    </ul>
+                    <p>Nous investissons dans la jeunesse congolaise et le dynamisme entrepreneurial.</p>
+                `
+            },
+            durable: {
+                icon: '♻️',
+                title: 'Projets Durables & Verts',
+                content: `
+                    <p>Financez vos initiatives de <strong>développement durable</strong> et environnementales avec nos crédits verts et responsables.</p>
+                    <p><strong>Projets financés :</strong></p>
+                    <ul>
+                        <li>Énergies renouvelables (solar, biogas, etc.)</li>
+                        <li>Agriculture biologique et durable</li>
+                        <li>Gestion des ressources naturelles</li>
+                        <li>Réduction des déchets et recyclage</li>
+                        <li>Projets d'eau potable et assainissement</li>
+                    </ul>
+                    <p>JERU FINANCE soutient une économie responsable et respectueuse de l'environnement.</p>
+                `
+            }
+        };
+
+        // Smart floating modal management
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('serviceModal');
+            const closeBtn = document.querySelector('.modal-close');
+            
+            function openSmartModal(serviceKey, card) {
+                const details = serviceDetails[serviceKey];
+                if (!details) return;
+                
+                // Fill modal content
+                document.getElementById('modalIcon').innerHTML = details.icon;
+                document.getElementById('modalTitle').textContent = details.title;
+                document.getElementById('modalBody').innerHTML = details.content;
+                
+                // Show modal
+                modal.classList.add('open');
+                
+                // Get modal content
+                const modalContent = modal.querySelector('.modal-content');
+                
+                // Get card position
+                const rect = card.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Fixed dimensions for modal
+                const modalWidth = 500;
+                
+                // Calculate position (centered on card horizontally)
+                let left = rect.left + (rect.width / 2) - (modalWidth / 2);
+                let top = rect.bottom + scrollTop + 15;
+                
+                // Smart adjustment: keep within viewport horizontally
+                if (left < 20) left = 20;
+                if (left + modalWidth > window.innerWidth - 20) {
+                    left = window.innerWidth - modalWidth - 20;
+                }
+                
+                // Smart adjustment: if below viewport, show above card
+                const modalHeight = Math.min(500, window.innerHeight - 100);
+                if (top + modalHeight > scrollTop + window.innerHeight - 20) {
+                    top = rect.top + scrollTop - modalHeight - 15;
+                }
+                
+                // Ensure not above viewport
+                if (top < scrollTop + 20) {
+                    top = scrollTop + 20;
+                }
+                
+                // Apply position
+                modalContent.style.position = 'absolute';
+                modalContent.style.left = left + 'px';
+                modalContent.style.top = top + 'px';
+                modalContent.style.width = modalWidth + 'px';
+                modalContent.style.maxHeight = '500px';
+                modalContent.style.right = 'auto';
+                modalContent.style.height = 'auto';
+                modalContent.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                modalContent.style.opacity = '0';
+                modalContent.style.transform = 'translateY(-10px)';
+                
+                // Animate in
+                setTimeout(() => {
+                    modalContent.style.opacity = '1';
+                    modalContent.style.transform = 'translateY(0)';
+                }, 10);
+            }
+            
+            function closeSmartModal() {
+                const modalContent = modal.querySelector('.modal-content');
+                modalContent.style.opacity = '0';
+                modalContent.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    modal.classList.remove('open');
+                }, 300);
+            }
+            
+            // Open on "en savoir plus" click
+            document.querySelectorAll('.saiba-mais').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const card = this.closest('.servico-card, .about-card');
+                    if (!card) return;
+                    
+                    const serviceKey = card.dataset.service;
+                    
+                    if (serviceKey && serviceDetails[serviceKey]) {
+                        openSmartModal(serviceKey, card);
+                    }
+                });
+            });
+
+            // Close modal
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeSmartModal);
+            }
+
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeSmartModal();
+                }
+            });
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('open')) {
+                    closeSmartModal();
+                }
+            });
+        });
+    </script>
+
+    <!-- About Section - Cards with expandable details -->
+    <section class="servicos" id="sobre">
+        <div class="container">
+            <h2>À PROPOS DE JERU FINANCE</h2>
+            <p class="servicos-subtitle">Une institution financière congolaise dédiée au microcrédit, l'épargne et l'inclusion financière</p>
+
+            <div class="servicos-grid about-cards">
+                
+                <article class="servico-card about-card" data-service="qui-sommes-nous">
+                    <div class="servico-icon"><img src="Image/carte 2.png" alt="Formation" class="service-icon"> </div>
+                    <h3>Qui sommes-nous ?</h3>
+                    
+                    <p>L'entreprise JERU FINANCE est une institution financière, micro crédit et d'épargne en RDC.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>L'objectif de <strong>JERU FINANCE</strong> est de :</p>
+                        <ul>
+                            <li>Faciliter l'accès au financement</li>
+                            <li>Promouvoir l'épargne</li>
+                            <li>Soutenir les entreprises</li>
+                            <li>Renforcer l'inclusion financière</li>
+                            <li>Améliorer durablement les conditions de vie du bénéficiaire</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="forme-juridique">
+                    <div class="servico-icon"></div>
+                    <h3>Forme juridique</h3>
+                    <p>SARL — forme juridique courante pour les PMIs et institutions de microfinance.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>SARL " Société à responsabilité limitée", c'est une forme juridique courante pour les petites et moyennes institutions financières, y compris certaines institutions micro finance. Elle offre une responsabilité limitée aux associés et flexibilité dans la gestion.</p>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="vision">
+                    <div class="servico-icon"></div>
+                    <h3>Vision</h3>
+                    <p>Acteur financier de référence reconnu dans la région.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>Que l'entreprise JERU FINANCE soit un acteur financier de référence, reconnu pour la confiance,
+l'innovation, la fiabilité, l'inclusion et contribuer au développement économique durable de la " communauté kimbanguiste et autres" que nous servons.</p>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="mission">
+                    <div class="servico-icon"></div>
+                    <h3>Mission</h3>
+                    <p>Créer une relation de confiance avec la communauté.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>L'entreprise JERU FINANCE a une mission de créer une relation de confiance et de transparence avec la communauté kimbanguiste et la population congolaise, de leurs convaincre avec notre message clé publicitaire mais simple.</p>
+                        <p>Exemple: chez "JERU FINANCE" nous croyons aux petits rêves. Que vous soyez vendeurs, agriculteurs, jeunes entrepreneurs... Nous vous accompagnons pas à pas, avec respect, simplicité et confiance</p>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="valeurs">
+                    <div class="servico-icon"></div>
+                    <h3>Nos Valeurs</h3>
+                    <p>Intégrité, transparence, responsabilité et inclusion.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p><strong>JERU FINANCE</strong> est guidée par les valeurs d'intégrité, de transparence, de responsabilité, de professionnalisme, de confidentialité et d'inclusion financière afin de garantir un service fiable et durable à nos clients.</p>
+                        <p><strong>Exemple :</strong></p>
+                        <ul>
+                            <li>Protéger le dépôt des clients</li>
+                            <li>Accueillir les clients avec courtoisie</li>
+                            <li>Conserver les dossiers en sécurité.</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="role">
+                    <div class="servico-icon"></div>
+                    <h3>Rôle</h3>
+                    <p>Collecter, gérer et orienter les ressources financières pour soutenir le développement.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>Le rôle de JERU FINANCE est essentiel dans l'économie, il consiste principalement à collecter, gérer et orienter les ressources financières afin de soutenir le développement économique et social.</p>
+                        <p>Ces principaux rôles :</p>
+                        <ul>
+                            <li><strong>Collecte et gestion de l'épargne</strong> — Permettre aux clients de déposer et sécuriser leurs argent (comptes courants, comptes d'épargne et dépôt à terme). Offrir des produits d'épargne adaptés aux besoins de la communauté kimbanguiste, des particuliers et des entreprises.</li>
+                            <li><strong>Octroi de crédits</strong> — Fournir des prêts et micro crédit pour soutenir les entreprises, commerces, la communauté kimbanguiste, les projets individuels ou communautaires, l'achat de biens durables et les investissements. Évaluer correctement la capacité de remboursement des clients pour limiter les risques.</li>
+                            <li><strong>Faciliter les paiements et transactions</strong> — Assurer le transfert d'argent, paiement et opérations financières de manière fiable et sécurisée.</li>
+                            <li><strong>Conseiller et accompagner les clients</strong> — Conseiller les clients sur la gestion de leurs ressources, la planification financière et l'investissement responsable pour une meilleure gestion de ressources.</li>
+                            <li><strong>Garantir la sécurité et la confiance</strong> — Protéger les fonds des clients grâce à des mécanismes de contrôle, de transparence et de conformité.</li>
+                            <li><strong>Contribution au développement économique et social</strong> — En finançant les activités génératrices de revenus, participer à la création d'emplois et à la réduction de la pauvreté.</li>
+                        </ul>
+                        <p><strong>Bref :</strong> JERU FINANCE est un acteur clé du développement, un intermédiaire de confiance entre l'épargne et l'investissement.</p>
+                    </div>
+                </article>
+
+                <article class="servico-card about-card" data-service="objectif">
+                    <div class="servico-icon"></div>
+                    <h3>Objectif</h3>
+                    <p>Faciliter l'accès au financement et soutenir le développement durable.</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                    <div class="card-details">
+                        <p>L'objectif de l'entreprise JERU FINANCE est de faciliter l'accès au financement, promouvoir l'épargne, soutenir les entreprises, renforcer l'inclusion financière et améliorer durablement les conditions de vie du bénéficiaire.</p>
+                        <p>Plus précisément, JERU FINANCE vise à :</p>
+                        <ul>
+                            <li>Faciliter l'accès au financement pour les entrepreneurs et les ménages.</li>
+                            <li>Promouvoir l'épargne en proposant des produits adaptés aux besoins locaux.</li>
+                            <li>Soutenir les entreprises et commerces par des microcrédits et conseils.</li>
+                            <li>Renforcer l'inclusion financière en touchant les populations mal desservies.</li>
+                            <li>Améliorer durablement les conditions de vie des bénéficiaires via des financements responsables et de l'accompagnement.</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="servicos" id="servicos">
+        <div class="container">
+            <h2>NOS SERVICES</h2>
+            <p class="servicos-subtitle">Des solutions de financement adaptées à vos besoins</p>
+            
+            <div class="servicos-grid">
+                <div class="servico-card" data-service="epargne">
+                    <div class="servico-icon"><img src="Image/finance.jpg" alt="Épargne" class="service-icon"></div>
+                    <h3>Collecter l'epargne</h3>
+                    <p>La collecte de l’épargne consiste à permettre aux clients de déposer leur argent en sécurité auprès de l’institution.
+</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                </div>
+                
+                <div class="servico-card" data-service="agricole">
+                    <div class="servico-icon"><img src="Image/carte 1.png" alt="Carte de crédit" class="service-icon"></div>
+                    <h3>Accorder des Crédits</h3>
+                    <p>Prêtez de l'argent aux clients pour financer leurs activités ou besoins personnels avec des conditions flexibles...</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                </div>
+                
+                <div class="servico-card" data-service="investissement">
+                    <div class="servico-icon"><img src="Image/carte.png" alt="Carte de crédit" class="service-icon"></div>
+                    <h3>Offrir des Services Financiers</h3>
+                    <p>Facilitez les opérations financières quotidiennes avec dépôts, transferts, paiements et services digitaux...</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                </div>
+                
+                <div class="servico-card" data-service="formation">
+                    <div class="servico-icon"><img src="Image/carte 2.png" alt="Formation" class="service-icon"></div>
+                    <h3>Former et Accompagner les Clients</h3>
+                    <p>Aidez vos clients à mieux gérer leur argent avec éducation financière, formations et conseils personnalisés...</p>
+                    <a href="#" class="saiba-mais">en savoir plus →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Us Section -->
+    <section class="servicos" id="trabalhe" style="background: linear-gradient(135deg, #f8fffe 0%, #f0f8f5 100%);">
+        <div class="container">
+            <h2>REJOIGNEZ-NOUS</h2>
+            <p class="servicos-subtitle">Devenez partenaire de notre mission d'inclusion financière</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 400px; gap: 50px; align-items: start;">
+                <!-- Avantages à gauche -->
+                <div class="servicos-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="servico-card">
+                        <div class="servico-icon">💸</div>
+                        <h3>Taux Compétitifs</h3>
+                        <p>Accès à des taux adaptés aux petits projets et aux entrepreneurs locaux.</p>
+                    </div>
+
+                    <div class="servico-card">
+                        <div class="servico-icon">⚡</div>
+                        <h3>Processus Rapide</h3>
+                        <p>Réponse en moins de 48h et procédure simplifiée pour accélérer vos projets.</p>
+                    </div>
+
+                    <div class="servico-card">
+                        <div class="servico-icon">🔁</div>
+                        <h3>Flexibilité</h3>
+                        <p>Plans de remboursement modulables selon votre activité et vos revenus.</p>
+                    </div>
+
+                    <div class="servico-card">
+                        <div class="servico-icon">🤝</div>
+                        <h3>Accompagnement</h3>
+                        <p>Formation et coaching pour assurer la réussite de votre projet.</p>
+                    </div>
+                </div>
+
+                <!-- Formulaire à droite -->
+                <div style="background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%), url('Image/fond.jpeg') center/cover no-repeat; padding: 35px; border-radius: 15px; box-shadow: 0 10px 40px rgba(39, 174, 96, 0.1);">
+                    <h3 style="color: #0f4d2f; margin-bottom: 10px; font-size: 22px;">Demandez un accompagnement</h3>
+                    <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Remplissez ce formulaire et notre équipe vous contactera rapidement.</p>
+                    
+                    <form action="demande-credit.html" method="get" style="display: flex; flex-direction: column; gap: 18px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="join-nom" style="font-size: 13px; font-weight: 600; color: #0f4d2f; margin-bottom: 6px; text-transform: uppercase;">Votre nom *</label>
+                            <input type="text" id="join-nom" name="nom" required style="padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="join-email" style="font-size: 13px; font-weight: 600; color: #0f4d2f; margin-bottom: 6px; text-transform: uppercase;">Votre e-mail *</label>
+                            <input type="email" id="join-email" name="email" required style="padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="join-montant" style="font-size: 13px; font-weight: 600; color: #0f4d2f; margin-bottom: 6px; text-transform: uppercase;">Montant souhaité *</label>
+                            <input type="text" id="join-montant" name="montant" placeholder="Ex: 500 000 FC" required style="padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; transition: all 0.3s ease;">
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column;">
+                            <label for="join-projet" style="font-size: 13px; font-weight: 600; color: #0f4d2f; margin-bottom: 6px; text-transform: uppercase;">Description du projet</label>
+                            <textarea id="join-projet" name="projet" rows="3" placeholder="Décrivez brièvement votre projet..." style="padding: 12px 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; transition: all 0.3s ease;"></textarea>
+                        </div>
+                        
+                        <button type="submit" style="margin-top: 15px; background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); color: white; border: none; padding: 16px 28px; border-radius: 50px; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;">
+                            <span>📤</span> ENVOYER MA DEMANDE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="fale-conosco" id="contato">
+        <div class="container contact-container">
+            <div class="contact-form-section">
+                <h2>Nous Sommes Là Pour Vous</h2>
+                <p>Posez-nous vos questions sur nos services ou votre demande de crédit. Notre équipe répondra rapidement!</p>
+                
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="nome">Votre nom*</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Votre e-mail*</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="telefone">Votre téléphone*</label>
+                            <input type="tel" id="telefone" name="telefone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem">Message</label>
+                        <textarea id="mensagem" name="mensagem" rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="robo" name="robo">
+                        <label for="robo">Je ne suis pas un robot</label>
+                    </div>
+                    
+                    <button type="submit" class="btn-enviar">ENVOYER</button>
+                </form>
+            </div>
+            
+            <div class="contact-info-section">
+                <h2>Contactez JERU FINANCE SARL</h2>
+                <p>Pour toute question ou demande de crédit, appelez-nous :</p>
+                <div class="phone-number">(+243) 8545739283</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section footer-about">
+                <div class="footer-logo">
+                    <img src="Image/WhatsApp Image 2026-02-09 at 12.05.27.jpeg" alt="JERU Logo">
+                </div>
+                <div>
+                    <p class="footer-text">
+                        <strong>JERU FINANCE SARL / HOLDING</strong>
+                        <strong style="font-size: 13px; color: #f39c12;">CRC: SC-006462/O-O</strong>
+                        Institution de Microfinance à Kinshasa engagée dans l'inclusion financière basée sur la confiance, la crédibilité, l'éthique et la qualité de service.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="footer-social">
+                    <a href="https://wa.me/243854573928" target="_blank" aria-label="WhatsApp" title="Contactez-nous sur WhatsApp">
+                        <img src="logo/icons8-whatsapp-logo-94.png" alt="WhatsApp">
+                    </a>
+                    <a href="#" target="_blank" aria-label="Facebook" title="Suivez-nous sur Facebook">
+                        <img src="logo/icons8-logo-facebook-1500.png" alt="Facebook">
+                    </a>
+                    <a href="#" target="_blank" aria-label="Instagram" title="Suivez-nous sur Instagram">
+                        <img src="logo/icons8-instagram-94.png" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Rapide</h4>
+                <div class="footer-contact">
+                    <p>📞 <a href="tel:+243854573928">(+243) 854 573 928</a></p>
+                    <p>📧 <a href="mailto:contact@jerufinance.cd">contact@jerufinance.cd</a></p>
+                    <p>📍 Kinshasa, RDC</p>
+                    <p>🕒 Lun - Sam: 8h - 17h</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p class="footer-copyright">
+                <strong>Conçu par Ingénieur Jp Bolombo</strong> © 2026 - Tous droits réservés | JeRU Marketing & Inovalize
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ===== AMÉLIORATIONS HTML =====
+
+        // 0. Page Loader
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('pageLoader');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 800);
+        });
+
+        // 1. Scroll Progress Indicator
+        let ticking = false;
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    const scrollIndicator = document.querySelector('.scroll-indicator');
+                    const scrollTop = window.scrollY;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrollPercent = (scrollTop / docHeight) * 100;
+                    scrollIndicator.style.width = scrollPercent + '%';
+
+                    // Show/hide back to top button
+                    const backToTop = document.getElementById('backToTop');
+                    if (scrollTop > 300) {
+                        backToTop.classList.add('show');
+                    } else {
+                        backToTop.classList.remove('show');
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // 2. Intersection Observer pour animations au défilement
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Ajouter l'animation fade-in à tous les cards
+        document.querySelectorAll('.valor-card, .servico-card, .beneficio-card').forEach(card => {
+            card.classList.add('fade-in');
+            observer.observe(card);
+        });
+
+        // 3. Smooth scroll pour les liens de navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // 4. Active link highlighting
+        function highlightActiveLink() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.clientHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.style.borderBottom = 'none';
+                    });
+                    const activeLink = document.querySelector(`.nav-menu a[href="#${sectionId}"]`);
+                    if (activeLink) {
+                        activeLink.style.borderBottom = '3px solid #27ae60';
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightActiveLink);
+
+        // 5. Form validation améliorée
+        const allForms = document.querySelectorAll('form');
+        allForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const nameField = this.querySelector('[name="nome"]');
+                const emailField = this.querySelector('[name="email"]');
+                const messageField = this.querySelector('[name="poste"], [name="mensagem"]');
+
+                // Validation
+                if (nameField && !nameField.value.trim()) {
+                    showNotification('❌ Veuillez entrer votre nom', 'error');
+                    nameField.focus();
+                    return;
+                }
+
+                if (emailField && !emailField.value.includes('@')) {
+                    showNotification('❌ Veuillez entrer un email valide', 'error');
+                    emailField.focus();
+                    return;
+                }
+
+                if (messageField && !messageField.value.trim()) {
+                    showNotification('❌ Veuillez remplir ce champ', 'error');
+                    messageField.focus();
+                    return;
+                }
+
+                // Envoi
+                showNotification('✅ Merci! Votre message a été envoyé avec succès.', 'success');
+                this.reset();
+            });
+        });
+
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                padding: 16px 24px;
+                background: ${type === 'success' ? 'linear-gradient(135deg, #27ae60, #229954)' : 'linear-gradient(135deg, #e74c3c, #c0392b)'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+                z-index: 10000;
+                font-weight: 600;
+                animation: slideInRight 0.4s ease;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.4s ease';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // 6. Lazy loading pour les images
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.add('loaded');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
+        }
+
+        // 7. Performance: Page load time
+        window.addEventListener('load', function() {
+            if (performance.timing) {
+                const pageLoadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log('⚡ Page loaded in ' + pageLoadTime + 'ms');
+            }
+        });
+
+        // 8. Keyboard navigation accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('serviceModal');
+                if (modal && modal.classList.contains('open')) {
+                    modal.classList.remove('open');
+                }
+            }
+        });
+
+        // 9. Add hover effects to cards
+        document.querySelectorAll('.servico-card, .valor-card, .about-card, .benefit-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+
+        // 10. Smooth animations for service cards
+        const serviceCards = document.querySelectorAll('.servico-card');
+        serviceCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+
+    <style>
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+    </style>
+
+    <!-- Service Detail Modal -->
+    <div id="serviceModal" class="service-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-header">
+                <div id="modalIcon" class="modal-icon"></div>
+                <h2 id="modalTitle"></h2>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
+    <script src="script.js" defer></script>
+</body>
+</html>
